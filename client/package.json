@@ -1,0 +1,30 @@
+{
+  "name": "valoria-isle",
+  "description": "Valoria Isle is a Sunflower Land Community Island made by Project Dignity.",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm run clean && esbuild ./src/Scene.ts --bundle --minify --tsconfig=tsconfig.json --outfile=public/Scene.js",
+    "dev": "npm run clean && esbuild ./src/Scene.ts --bundle --minify --watch --tsconfig=tsconfig.json --outfile=public/Scene.js --servedir=public",
+    "clean": "rimraf public/Scene.js",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@types/node": "^20.5.9",
+    "classnames": "^2.3.2",
+    "esbuild": "0.18.15",
+    "phaser": "^3.60.0",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.8.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.48.0",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.2.2"
+  }
+}
