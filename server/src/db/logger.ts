@@ -1,5 +1,4 @@
 import { connect, isConnected, getDatabase } from "./client";
-
 import { getFarm } from "../web3/Alchemy";
 
 export const logVisit = async (scene: string, farmId: number) => {
@@ -10,56 +9,25 @@ export const logVisit = async (scene: string, farmId: number) => {
 
   const existingFarm = await collection.findOne({ farmId });
 
-  const farm = await getFarm(farmId);
+  const blockchainFarm = await getFarm(farmId);
 
   if (existingFarm) {
     await collection.updateOne(
       { farmId },
       {
         $inc: { visitCount: 1 },
-        $set: { wallet: farm.wallet_address, farm: farm.farm_address },
+        $set: {
+          wallet: blockchainFarm.wallet_address,
+          farm: blockchainFarm.farm_address,
+        },
       }
     );
   } else {
     await collection.insertOne({
       farmId,
       visitCount: 1,
-      wallet: farm.wallet_address,
-      farm: farm.farm_address,
-      quests: {
-        season_1: {},
-        season_2: {},
-      },
-      assets: [],
-      canAccess: true,
+      wallet: blockchainFarm.wallet_address,
+      farm: blockchainFarm.farm_address,
     });
   }
-
-  if (scene === "valoria") populateValoria(farmId);
-};
-
-const populateValoria = async (farmId: number) => {
-  if (!isConnected()) await connect();
-
-  const database = getDatabase();
-  const collection = database.collection("valoria");
-
-  const existingFarm = await collection.findOne({ farmId });
-
-  if (!existingFarm || !existingFarm.wallet) return;
-
-  const quests = {
-    season_1: existingFarm.quests.season_1 || {},
-    season_2: existingFarm.quests.season_2 || {},
-  };
-
-  await collection.updateOne(
-    { farmId },
-    {
-      $set: {
-        quests: quests,
-        canAccess: existingFarm.canAccess || true,
-      },
-    }
-  );
 };

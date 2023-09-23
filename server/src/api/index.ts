@@ -3,21 +3,13 @@ import { connect, isConnected, getDatabase } from "../db/client";
 
 const mainRouter = Router();
 
-mainRouter.get("/", (req, res) => {
-  res.status(200).json({ message: "Hello world!" });
-});
-
 mainRouter.get("/stats/:roomId", async (req, res) => {
   const roomId = req.params.roomId;
 
   if (!roomId) {
     res.status(400).json({ status: "error", message: "missing room id" });
     return;
-  } else if (
-    roomId !== "valoria" &&
-    roomId !== "prophunt" &&
-    roomId !== "ingals"
-  ) {
+  } else if (roomId !== "valoria") {
     res.status(400).json({ status: "error", message: "invalid room id" });
     return;
   }

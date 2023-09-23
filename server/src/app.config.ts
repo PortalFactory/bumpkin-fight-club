@@ -4,9 +4,7 @@ import { playground } from "@colyseus/playground";
 import basicAuth from "express-basic-auth";
 
 import { LocalRoom } from "./rooms/localRoom";
-import { IngalsRoom } from "./rooms/ingalsRoom";
 import { ValoriaRoom } from "./rooms/valoriaRoom";
-import { PropHuntRoom } from "./rooms/prophuntRoom";
 
 import { connect } from "./db/client";
 
@@ -26,8 +24,6 @@ export default config({
   initializeGameServer: (gameServer) => {
     gameServer.define("local", LocalRoom);
     gameServer.define("valoria", ValoriaRoom);
-    gameServer.define("prop_hunt", PropHuntRoom);
-    gameServer.define("ingals_room", IngalsRoom);
   },
 
   initializeExpress: (app) => {
