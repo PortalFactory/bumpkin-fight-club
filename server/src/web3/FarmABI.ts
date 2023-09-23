@@ -1,4 +1,4 @@
-export const FarmABI: any = [
+export const FarmABI = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
     anonymous: false,
@@ -416,4 +416,4 @@ export const FarmABI: any = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;

@@ -1,7 +1,6 @@
 import { connect, isConnected, getDatabase } from "./client";
 
 import { getFarm } from "../web3/Alchemy";
-import { getWalletAssets } from "../api/projectdignity";
 
 export const logVisit = async (scene: string, farmId: number) => {
   if (!isConnected()) await connect();
@@ -49,10 +48,6 @@ const populateValoria = async (farmId: number) => {
 
   if (!existingFarm || !existingFarm.wallet) return;
 
-  const data = await getWalletAssets(existingFarm.wallet);
-
-  const allAssets = Object.values(data).flat();
-
   const quests = {
     season_1: existingFarm.quests.season_1 || {},
     season_2: existingFarm.quests.season_2 || {},
@@ -62,7 +57,6 @@ const populateValoria = async (farmId: number) => {
     { farmId },
     {
       $set: {
-        assets: allAssets,
         quests: quests,
         canAccess: existingFarm.canAccess || true,
       },
