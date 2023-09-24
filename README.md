@@ -32,3 +32,8 @@ Community island for [Sunflower Land](https://sunflower-land.com/)
 - Open https://sunflower-land.com/testnet page and log in
 - Change url to https://sunflower-land.com/testnet/#/community-tools
 - Enter client URL(http://localhost:8000)
+
+## Based on
+
+- Client: https://github.com/0xSacul/valoria-isle
+- Server: https://github.com/0xSacul/sacul-community-island-server

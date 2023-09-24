@@ -1,10 +1,9 @@
 {
-  "name": "valoria-isle",
-  "description": "Valoria Isle is a Sunflower Land Community Island made by Project Dignity.",
+  "name": "bumpkin-fight-club-client",
   "version": "1.0.0",
   "scripts": {
-    "build": "npm run clean && esbuild ./src/Scene.ts --bundle --minify --tsconfig=tsconfig.json --outfile=public/Scene.js",
-    "dev": "npm run clean && esbuild ./src/Scene.ts --bundle --minify --watch --tsconfig=tsconfig.json --outfile=public/Scene.js --servedir=public",
+    "build": "npm run clean && node build.mjs",
+    "dev": "npm run clean && node serve.mjs",
     "clean": "rimraf public/Scene.js",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "tsc": "tsc --noEmit"
@@ -23,6 +22,7 @@
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
+    "esbuild-envfile-plugin": "^1.0.5",
     "eslint": "^8.48.0",
     "rimraf": "^5.0.1",
     "typescript": "^5.2.2"

@@ -2,6 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Phaser from "phaser";
 
+// @ts-ignore
+import * as env from "env";
+
 import { UI } from "./UI";
 import { eventManager } from "./EventsManager";
 import { Label } from "./Components/Label";
@@ -26,23 +29,21 @@ let isLoaded = false;
 export default class ExternalScene extends window.BaseScene {
   constructor() {
     super({
-      // name: "valoria_isle",
-      name: "local",
+      name: env.COMMUNITY_ISLAND_ID,
       map: {
         tilesetUrl: REPO_URL + "tileset.png" + `?v=${Date.now()}`,
       },
       player: {
         spawn: {
-          x: 567, // SPAWN
+          x: 567,
           y: 770,
         },
       },
       mmo: {
         enabled: true,
-        // url: "wss://plaza.sacul.cloud",
-        url: "ws://localhost:2567",
-        roomId: "local",
-        serverId: "valoria",
+        url: env.SERVER_URL,
+        roomId: env.COMMUNITY_ISLAND_ID,
+        serverId: env.SERVER_ROOM_ID,
       },
     });
   }
