@@ -20,8 +20,8 @@ const REPO_URL = "https://0xsacul.github.io/valoria-isle/";
 
 // Community API
 export const CommunityAPI = new window.CommunityAPI({
-  id: "valoria_isle",
-  apiKey: "b96ee2b5-f1e9-41e2-a54a-9cbd6d624d48",
+  id: env.COMMUNITY_ISLAND_ID,
+  apiKey: env.COMMUNITY_ISLAND_API_KEY,
 });
 
 let isLoaded = false;

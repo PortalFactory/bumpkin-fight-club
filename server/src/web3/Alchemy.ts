@@ -3,16 +3,17 @@ import { FarmABI } from "./FarmABI";
 
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ALCHEMY_URL));
 
-const FarmContract = "0x2b4a66557a79263275826ad31a4cddc2789334bd";
-
-export async function getFarm(farm_id: number) {
-  if (!farm_id) {
+export async function getFarm(farmId: number) {
+  if (!farmId) {
     return { error: "Invalid farm id" };
   }
 
-  const farm_contract = new web3.eth.Contract(FarmABI, FarmContract);
+  const farmContract = new web3.eth.Contract(
+    FarmABI,
+    process.env.FARM_CONTRACT
+  );
 
-  let farm = await farm_contract.methods.getFarm(farm_id).call();
+  let farm = await farmContract.methods.getFarm(farmId).call();
 
   return {
     farm_id: farm.tokenId,
