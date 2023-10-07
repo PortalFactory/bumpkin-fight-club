@@ -1,18 +1,18 @@
 import { connect, isConnected, getDatabase } from "./client";
 import { getFarm } from "../web3/Alchemy";
 
-export const logVisit = async (scene: string, farmId: number) => {
+export const logVisit = async (farmId: number) => {
   if (!isConnected()) await connect();
 
   const database = getDatabase();
-  const collection = database.collection(scene);
+  const playersCollection = database.collection("players");
 
-  const existingFarm = await collection.findOne({ farmId });
+  const existingPlayer = await playersCollection.findOne({ farmId });
 
   const blockchainFarm = await getFarm(farmId);
 
-  if (existingFarm) {
-    await collection.updateOne(
+  if (existingPlayer) {
+    await playersCollection.updateOne(
       { farmId },
       {
         $inc: { visitCount: 1 },
@@ -23,7 +23,7 @@ export const logVisit = async (scene: string, farmId: number) => {
       }
     );
   } else {
-    await collection.insertOne({
+    await playersCollection.insertOne({
       farmId,
       visitCount: 1,
       wallet: blockchainFarm.wallet_address,

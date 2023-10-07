@@ -128,9 +128,10 @@ export default class ExternalScene extends window.BaseScene {
 
   update() {
     super.update();
-    if (!isLoaded) this.input.keyboard.enabled = false;
 
-    //console.warn(this.currentPlayer.x + " " + this.currentPlayer.y);
+    if (!isLoaded) {
+      this.input.keyboard.enabled = false;
+    }
 
     if (!this.playerDatalistener) {
       this.playerDatalistener = this.mmoService.state.context.server?.onMessage(
@@ -139,7 +140,7 @@ export default class ExternalScene extends window.BaseScene {
           if (!isLoaded) {
             isLoaded = true;
             this.input.keyboard.enabled = true;
-            console.warn("[Valoria Isle] => Loaded");
+            console.warn("Player Data Loaded");
             eventManager.emit("loading", false);
           }
 
@@ -157,12 +158,12 @@ export default class ExternalScene extends window.BaseScene {
       );
     }
 
-    if (!this.leaveListener) {
-      this.leaveListener = this.mmoService.state.context.server?.onLeave(() => {
-        console.error("[Valoria Isle] => Lost connection to server");
-        eventManager.emit("lostConnection");
-      });
-    }
+    // if (!this.leaveListener) {
+    //   this.leaveListener = this.mmoService.state.context.server?.onLeave(() => {
+    //     console.error("Lost connection to server");
+    //     eventManager.emit("lostConnection");
+    //   });
+    // }
 
     if (!this.idkWhyIHaveToListenToThis) {
       this.idkWhyIHaveToListenToThis =
@@ -318,7 +319,7 @@ export default class ExternalScene extends window.BaseScene {
 
     this.currentPlayer.db_data = db_data;
 
-    console.warn("[Valoria Isle] => Player Data Updated", db_data);
+    console.warn("Player Data Updated", db_data);
 
     this.updateUserMapSettings(db_data);
   }

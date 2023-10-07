@@ -3,7 +3,6 @@ import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
 import basicAuth from "express-basic-auth";
 
-import { LocalRoom } from "./rooms/localRoom";
 import { ValoriaRoom } from "./rooms/valoriaRoom";
 
 import { connect } from "./db/client";
@@ -22,7 +21,6 @@ const basicAuthMiddleware = basicAuth({
 
 export default config({
   initializeGameServer: (gameServer) => {
-    gameServer.define("local", LocalRoom);
     gameServer.define("valoria", ValoriaRoom);
   },
 

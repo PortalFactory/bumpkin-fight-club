@@ -19,8 +19,8 @@ export class ValoriaRoom extends Room<RoomState> {
   maxClients: number = 150;
 
   private database = getDatabase();
-  private settings = this.database.collection("settings");
-  private collection = this.database.collection("valoria");
+  private settingsCollection = this.database.collection("settings");
+  private playersCollection = this.database.collection("players");
 
   private pushMessage = (message: Message) => {
     this.state.messages.push(message);
@@ -52,7 +52,7 @@ export class ValoriaRoom extends Room<RoomState> {
       if (!player) return;
       if (!isConnected()) connect();
 
-      const player_data = await this.collection.findOne({
+      const player_data = await this.playersCollection.findOne({
         farmId: player.farmId,
       });
 
@@ -62,7 +62,7 @@ export class ValoriaRoom extends Room<RoomState> {
 
       player_data.quests = input;
 
-      await this.collection.updateOne(
+      await this.playersCollection.updateOne(
         { farmId: player.farmId },
         { $set: player_data }
       );
@@ -73,14 +73,16 @@ export class ValoriaRoom extends Room<RoomState> {
     });
 
     this.onMessage("quest_hoodie", async (client, input) => {
-      const settings = await this.settings.findOne({ key: "valoria" });
+      const settings = await this.settingsCollection.findOne({
+        key: "valoria",
+      });
       let hoodie_left = settings?.hoodieLeft;
 
       if (!settings || !hoodie_left) return;
 
       if (input.removeOne && hoodie_left > 0) {
         hoodie_left--;
-        await this.settings.updateOne(
+        await this.settingsCollection.updateOne(
           { key: "valoria" },
           { $set: { hoodieLeft: hoodie_left } }
         );
@@ -176,12 +178,14 @@ export class ValoriaRoom extends Room<RoomState> {
       experience: number;
     }
   ) {
-    await logVisit("valoria", auth.farmId);
+    await logVisit(auth.farmId);
 
     if (!isConnected()) connect();
 
-    const db_data = await this.collection.findOne({ farmId: auth.farmId });
-    const settings = await this.settings.findOne({ key: "valoria" });
+    const db_data = await this.playersCollection.findOne({
+      farmId: auth.farmId,
+    });
+    const settings = await this.settingsCollection.findOne({ key: "valoria" });
 
     this.farmConnections[auth.farmId] = client.sessionId;
 
