@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { InnerPanel } from "./Panel";
+import { InnerPanel } from "./common/Panel";
 
 const REPO_URL = "https://0xsacul.github.io/valoria-isle/";
 
-export type NotificationIcons =
-  | "ProjectDignityHoodie"
-  | "Success"
-  | "ValoriaWreath";
+export type NotificationIcons = "Success";
 
 type Notification = {
   icon?: NotificationIcons;
@@ -20,11 +17,6 @@ interface Props {
 
 class NotificationManager {
   private listener?: (notification: Notification, isShown: boolean) => void;
-  private id = 0;
-
-  constructor() {
-    this.id = Date.now();
-  }
 
   public notification = (notification: Notification) => {
     if (this.listener) {
@@ -55,12 +47,8 @@ export const Notifications: React.FC<Props> = ({ scene }) => {
 
   const getIcon = (icon: NotificationIcons) => {
     switch (icon) {
-      case "ProjectDignityHoodie":
-        return REPO_URL + "assets/icons/ProjectDignityHoodie.png";
       case "Success":
         return REPO_URL + "assets/icons/Success.gif";
-      case "ValoriaWreath":
-        return REPO_URL + "assets/icons/ValoriaWreath.png";
     }
   };
 

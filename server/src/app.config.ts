@@ -3,11 +3,8 @@ import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
 import basicAuth from "express-basic-auth";
 
-import { ValoriaRoom } from "./rooms/valoriaRoom";
-
+import { MainRoom } from "./rooms/mainRoom";
 import { connect } from "./db/client";
-
-import mainRouter from "./api";
 
 const basicAuthMiddleware = basicAuth({
   // list of users and passwords
@@ -21,7 +18,7 @@ const basicAuthMiddleware = basicAuth({
 
 export default config({
   initializeGameServer: (gameServer) => {
-    gameServer.define("valoria", ValoriaRoom);
+    gameServer.define("main", MainRoom);
   },
 
   initializeExpress: (app) => {
@@ -29,9 +26,7 @@ export default config({
       app.use("/", playground);
     } else {
       app.get("/", (req, res) => {
-        res.redirect(
-          "https://github.com/0xSacul/sacul-community-island-server"
-        );
+        res.redirect(process.env.PLAYGROUND_URL);
       });
     }
 
@@ -42,8 +37,6 @@ export default config({
         columns: ["roomId", "name", "clients", "elapsedTime"],
       })
     );
-
-    app.use("/api", mainRouter);
   },
 
   beforeListen: () => {
