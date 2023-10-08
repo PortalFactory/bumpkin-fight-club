@@ -7,7 +7,7 @@ import * as env from "env";
 
 import { UI } from "./UI";
 import { eventManager } from "./lib/event-manager";
-import { Label } from "./components/common/Label";
+import { Label } from "./Components/common/Label";
 import { CommunityModals, DatabaseData } from "./models/types";
 import { CustomNPCs } from "./lib/npcs";
 import { CustomObjects } from "./lib/objects";

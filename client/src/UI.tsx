@@ -6,13 +6,13 @@ import * as env from "env";
 
 import { CommunityAPI } from "./Scene";
 import { eventManager } from "./lib/event-manager";
-import { NPCModal } from "./components/NPCModal";
-import { LostConnection } from "./components/modals/LostConnection";
-import { Notifications, notificationManager } from "./components/Notification";
-import { Dialogue } from "./components/modals/Dialogue";
-import { IsleIntroduction } from "./components/modals/IsleIntroduction";
-import { Banned } from "./components/modals/Banned";
-import { Loading } from "./components/modals/Loading";
+import { NPCModal } from "./Components/NPCModal";
+import { LostConnection } from "./Components/modals/LostConnection";
+import { Notifications, notificationManager } from "./Components/Notification";
+import { Dialogue } from "./Components/modals/Dialogue";
+import { IsleIntroduction } from "./Components/modals/IsleIntroduction";
+import { Banned } from "./Components/modals/Banned";
+import { Loading } from "./Components/modals/Loading";
 
 type Props = {
   scene: any;
