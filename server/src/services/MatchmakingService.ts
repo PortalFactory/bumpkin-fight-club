@@ -1,35 +1,29 @@
 import { BumpinFightClubDB } from "../db/BumpkinFightClubDB";
 
-type FightResult = {
-  win: any;
-  lose: any;
-};
-
 export class MatchmakingService {
   constructor(private db: BumpinFightClubDB) {}
 
-  fight(fPlayer: any, sPlayer: any): FightResult {
+  fight(players: any[]): any {
+    const [fPlayer, sPlayer] = players;
     const totalValue = fPlayer.value + sPlayer.value;
     const weights = [
-      fPlayer.value * 100 / totalValue,
-      sPlayer.value * 100 / totalValue
+      fPlayer.value / totalValue,
+      sPlayer.value / totalValue
     ];
-    const counts: number[] = [];
 
-    Array.from({ length: 1000000 }, () => this.randomSample(weights)).forEach(value => counts[value]++);
+    const res = this.weightedRand(weights);
 
-    return counts[0] > counts[1] ? {
-      win: fPlayer,
-      lose: sPlayer
-    } : {
-      win: sPlayer,
-      lose: fPlayer
-    };
+    return players[res];
   }
 
-  private randomSample(weights: number[]): number {
-    let sample = Math.random() * weights.reduce((sum, weight) => sum + weight, 0);
-    const value = weights.find(weight => (sample -= weight) < 0);
-    return value;
+  private weightedRand(weights: number[]): number {
+    const r = Math.random();
+    let sum = 0;
+
+    for (let i = 0; i < weights.length - 1; i++) {
+      sum += weights[i];
+      if (r <= sum)
+        return i;
+    }
   }
 }
