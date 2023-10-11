@@ -5,11 +5,7 @@ export type CustomAudio = {
 
 export const CustomAudios = [
   {
-    id: "ambient",
-    url: "assets/audio/TheFinalofTheFantasy.mp3",
-  },
-  {
     id: "success",
-    url: "assets/audio/Success.mp3",
+    url: "/assets/audio/Success.mp3",
   },
 ];

@@ -1,9 +1,11 @@
 import React from "react";
+
+// @ts-ignore
+import * as env from "env";
+
 import { Panel } from "../common/Panel";
 
-const REPO_URL = "https://0xsacul.github.io/valoria-isle/";
-
-const HumanDeath = REPO_URL + "assets/other/HumanDeath.gif";
+const HumanDeath = env.CLIENT_URL + "/assets/other/HumanDeath.gif";
 
 export const LostConnection: React.FC = () => {
   return (

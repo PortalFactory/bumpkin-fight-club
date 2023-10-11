@@ -7,7 +7,7 @@ export const CustomObjects: CustomObject[] = [
     id: "boat",
     x: 520,
     y: 840,
-    spritesheet: "assets/objects/Boat.png",
+    spritesheet: "/assets/objects/Boat.png",
     isAnimated: false,
     sheet: {
       width: 80,
@@ -37,7 +37,7 @@ export const CustomObjects: CustomObject[] = [
     id: "boat_smoke",
     x: 480,
     y: 810,
-    spritesheet: "assets/objects/BoatSmoke.png",
+    spritesheet: "/assets/objects/BoatSmoke.png",
     isAnimated: true,
     sheet: {
       frames: {
@@ -55,7 +55,7 @@ export const CustomObjects: CustomObject[] = [
     id: "spawn_wooden_sign",
     x: 600,
     y: 730,
-    spritesheet: "assets/objects/WoodenSign.png",
+    spritesheet: "/assets/objects/WoodenSign.png",
     isAnimated: false,
     sheet: {
       width: 16,

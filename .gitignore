@@ -1,6 +1,7 @@
 node_modules
-public/Scene.js
 
-*.js
 .env
 .vscode
+
+/client/public/Scene.js
+/client/public/tileset.png

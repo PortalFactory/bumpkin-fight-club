@@ -13,6 +13,7 @@ Community island for [Sunflower Land](https://sunflower-land.com/)
 
 - Run `npm i` to install packages
 - Duplicate `.env.sample` file with `.env` name and fill variable values
+- Copy [Sunnyside World](https://danieldiggle.itch.io/sunnyside) tileset to `/client/public/tileset.png`
 - Run `npm run dev` to start the client
 
 ## SFL Client
@@ -37,3 +38,7 @@ Community island for [Sunflower Land](https://sunflower-land.com/)
 
 - Client: https://github.com/0xSacul/valoria-isle
 - Server: https://github.com/0xSacul/sacul-community-island-server
+
+## Tiled
+
+- TBA

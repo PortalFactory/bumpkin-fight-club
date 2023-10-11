@@ -1,16 +1,19 @@
-export const PIXEL_SCALE = 2.625;
-const BASE_URL = "https://0xsacul.github.io/prophunt-community-island/";
+// @ts-ignore
+import * as env from "env";
 
-const lightBorder = BASE_URL + "assets/panel/light_border.png";
-const grayBorder = BASE_URL + "assets/panel/gray_border.png";
-const darkBorder = BASE_URL + "assets/panel/dark_border.png";
-const roomBorder = BASE_URL + "assets/panel/room_border.webp";
-const tableBorder = BASE_URL + "assets/panel/table_border2.webp";
-const greenBorder = BASE_URL + "assets/panel/green_border.png";
-const tabBorderStart = BASE_URL + "assets/panel/tab_border_start.png";
-const tabBorderMiddle = BASE_URL + "assets/panel/tab_border_middle.png";
-const progressBarBorder = BASE_URL + "assets/progress/progress_bar_border.png";
-const speechBubbleBorder = BASE_URL + "assets/speech_bubble.webp";
+export const PIXEL_SCALE = 2.625;
+
+const lightBorder = env.CLIENT_URL + "/assets/panel/light_border.png";
+const grayBorder = env.CLIENT_URL + "/assets/panel/gray_border.png";
+const darkBorder = env.CLIENT_URL + "/assets/panel/dark_border.png";
+const roomBorder = env.CLIENT_URL + "/assets/panel/room_border.webp";
+const tableBorder = env.CLIENT_URL + "/assets/panel/table_border.webp";
+const greenBorder = env.CLIENT_URL + "/assets/panel/green_border.png";
+const tabBorderStart = env.CLIENT_URL + "/assets/panel/tab_border_start.png";
+const tabBorderMiddle = env.CLIENT_URL + "/assets/panel/tab_border_middle.png";
+const progressBarBorder =
+  env.CLIENT_URL + "/assets/panel/progress_bar_border.png";
+const speechBubbleBorder = env.CLIENT_URL + "/assets/other/speech_bubble.webp";
 
 const pixelizedBorderStyle: React.CSSProperties = {
   borderStyle: "solid",

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { InnerPanel } from "./common/Panel";
 
-const REPO_URL = "https://0xsacul.github.io/valoria-isle/";
+// @ts-ignore
+import * as env from "env";
+
+import { InnerPanel } from "./common/Panel";
 
 export type NotificationIcons = "Success";
 
@@ -48,7 +50,7 @@ export const Notifications: React.FC<Props> = ({ scene }) => {
   const getIcon = (icon: NotificationIcons) => {
     switch (icon) {
       case "Success":
-        return REPO_URL + "assets/icons/Success.gif";
+        return env.CLIENT_URL + "/assets/icons/Success.gif";
     }
   };
 
