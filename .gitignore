@@ -3,3 +3,4 @@ public/Scene.js
 
 *.js
 .env
+.vscode
