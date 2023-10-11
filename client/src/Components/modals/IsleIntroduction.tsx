@@ -1,12 +1,14 @@
 import React from "react";
+
+// @ts-ignore
+import * as env from "env";
+
 import { Panel } from "../common/Panel";
 import { Button } from "../common/Button";
 
-const REPO_URL = "https://0xsacul.github.io/valoria-isle/";
-
-const ArrowRight = REPO_URL + "assets/icons/ArrowRight.png";
-const Heart = REPO_URL + "assets/icons/Heart.png";
-const Exclamation = REPO_URL + "assets/icons/Exclamation.png";
+const ArrowRight = env.CLIENT_URL + "/assets/icons/ArrowRight.png";
+const Heart = env.CLIENT_URL + "/assets/icons/Heart.png";
+const Exclamation = env.CLIENT_URL + "/assets/icons/Exclamation.png";
 
 interface Props {
   onClose: () => void;

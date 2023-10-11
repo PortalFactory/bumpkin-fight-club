@@ -15,9 +15,6 @@ import { CustomAudio, CustomAudios } from "./lib/audio";
 import { CustomObject } from "./models/objects";
 import { CustomNPC } from "./models/npcs";
 
-// Repo URL
-const REPO_URL = "https://0xsacul.github.io/valoria-isle/";
-
 // Community API
 export const CommunityAPI = new window.CommunityAPI({
   id: env.COMMUNITY_ISLAND_ID,
@@ -31,7 +28,7 @@ export default class ExternalScene extends window.BaseScene {
     super({
       name: env.COMMUNITY_ISLAND_ID,
       map: {
-        tilesetUrl: REPO_URL + "tileset.png" + `?v=${Date.now()}`,
+        tilesetUrl: env.CLIENT_URL + "/tileset.png",
       },
       player: {
         spawn: {
@@ -55,17 +52,14 @@ export default class ExternalScene extends window.BaseScene {
       if (npc.isAnimated) {
         this.load.spritesheet(
           npc.id + "NPC",
-          REPO_URL + npc.spritesheet + `?v=${Date.now()}`,
+          env.CLIENT_URL + npc.spritesheet,
           {
             frameWidth: npc.sheet.width,
             frameHeight: npc.sheet.height,
           }
         );
       } else {
-        this.load.image(
-          npc.id + "NPC",
-          REPO_URL + npc.spritesheet + `?v=${Date.now()}`
-        );
+        this.load.image(npc.id + "NPC", env.CLIENT_URL + npc.spritesheet);
       }
     });
 
@@ -73,22 +67,19 @@ export default class ExternalScene extends window.BaseScene {
       if (obj.isAnimated) {
         this.load.spritesheet(
           obj.id + "Object",
-          REPO_URL + obj.spritesheet + `?v=${Date.now()}`,
+          env.CLIENT_URL + obj.spritesheet,
           {
             frameWidth: obj.sheet.width,
             frameHeight: obj.sheet.height,
           }
         );
       } else {
-        this.load.image(
-          obj.id + "Object",
-          REPO_URL + obj.spritesheet + `?v=${Date.now()}`
-        );
+        this.load.image(obj.id + "Object", env.CLIENT_URL + obj.spritesheet);
       }
     });
 
     CustomAudios.forEach((audio: CustomAudio) => {
-      this.load.audio(audio.id, REPO_URL + audio.url + `?v=${Date.now()}`);
+      this.load.audio(audio.id, env.CLIENT_URL + audio.url);
     });
   }
 
