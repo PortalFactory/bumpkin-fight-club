@@ -1,6 +1,6 @@
 node_modules
-public/Scene.js
-public/tileset.png
 
-*.js
+/client/public/Scene.js
+/client/public/tileset.png
+
 .env
