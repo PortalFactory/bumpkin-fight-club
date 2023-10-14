@@ -4,7 +4,8 @@ import { playground } from "@colyseus/playground";
 import basicAuth from "express-basic-auth";
 
 import { MainRoom } from "./rooms/MainRoom";
-import { connect } from "./db/client";
+import { connect, getDatabase } from "./db/client";
+import { dbWearablesInit } from "./db/initialization";
 
 const basicAuthMiddleware = basicAuth({
   // list of users and passwords
@@ -39,7 +40,12 @@ export default config({
     );
   },
 
-  beforeListen: () => {
-    connect();
+  beforeListen: async () => {
+    await connect();
+    const database = getDatabase();
+    const wearablesCount = await database.collection("wearables").countDocuments();
+
+    if (!wearablesCount)
+      dbWearablesInit();
   },
 });
