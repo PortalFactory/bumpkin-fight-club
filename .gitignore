@@ -3,4 +3,6 @@ node_modules
 /client/public/Scene.js
 /client/public/tileset.png
 
+/tiled/*.tiled-session
+
 .env

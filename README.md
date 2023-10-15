@@ -41,4 +41,5 @@ Community island for [Sunflower Land](https://sunflower-land.com/)
 
 ## Tiled
 
-- TBA
+- Export map as `map.json` to `client/public` folder
+- Open exported file and replace `tilesets` with value from `/tiled/tilesets.json`
