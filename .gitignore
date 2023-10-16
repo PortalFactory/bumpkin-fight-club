@@ -8,5 +8,3 @@ node_modules
 
 /server/build
 /tiled/*.tiled-session
-
-.env
