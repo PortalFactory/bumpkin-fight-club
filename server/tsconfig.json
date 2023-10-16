@@ -12,7 +12,13 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@dto/*": ["../dto/*"],
+    }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "../dto",
+  ]
 }

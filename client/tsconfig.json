@@ -6,9 +6,16 @@
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "outDir": "public", // Output directory for the compiled JavaScript files
-    "strict": true
+    "strict": true,
+    "paths": {
+      "@dto/*": ["../dto/*"],
+    }
   },
-  "include": ["src", "public/assets"],
+  "include": [
+    "src",
+    "public/assets",
+    "../dto",
+  ],
   "lib": ["es6", "dom", "dom.iterable", "scripthost"],
   "typeRoots": ["./node_modules/phaser/types"],
   "types": ["Phaser"]

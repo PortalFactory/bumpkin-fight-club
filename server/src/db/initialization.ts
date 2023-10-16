@@ -1,4 +1,4 @@
-import { ITEM_IDS } from "../types/bumpkin";
+import { ITEM_IDS } from "@dto/bumpkin";
 import { Wearable } from "./models";
 
 export async function dbWearablesInit(): Promise<void> {

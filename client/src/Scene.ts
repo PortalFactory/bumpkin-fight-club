@@ -138,7 +138,7 @@ export default class ExternalScene extends window.BaseScene {
     if (mmoServiceSnapshot.matches("joined") && !this.initiatedListeners) {
       const mmoContext = mmoServiceSnapshot.context;
 
-      mmoContext.server?.onMessage("player_data", (data: DatabaseData) => {
+      mmoContext.server?.onMessage("login", (data: DatabaseData) => {
         if (!isLoaded) {
           isLoaded = true;
           this.input.keyboard.enabled = true;
@@ -148,7 +148,7 @@ export default class ExternalScene extends window.BaseScene {
         this.updateUserData(data);
       });
 
-      mmoContext.server?.send("load_player_data", {
+      mmoContext.server?.send("login", {
         options: this.options.player.spawn,
         auth: {
           bumpkin: mmoContext.bumpkin,

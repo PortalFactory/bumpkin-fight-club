@@ -1,10 +1,12 @@
 import { Room, Client } from "colyseus";
 import { IncomingMessage } from "http";
 
-import { Bumpkin } from "../types/bumpkin";
-import { connect, isConnected, getDatabase } from "../db/client";
+import { Bumpkin } from "@dto/bumpkin";
+import { IPlayer } from "@dto/protocol";
+import { getDatabase } from "../db/client";
 import { logVisit } from "../db/logger";
 import { Clothing, InputData, Message, RoomState, Player } from "./state/main";
+import { WithId } from "mongodb";
 
 const MAX_MESSAGES = 100;
 
@@ -42,34 +44,19 @@ export class MainRoom extends Room<RoomState> {
       player?.inputQueue.push(input);
     });
 
-    this.onMessage("load_player_data", async (client, input) => {
+    this.onMessage("login", async (client, input) => {
       this.loadPlayerData(client, input);
     });
 
-    this.onMessage("quest_event", async (client, input) => {
-      const player = this.state.players.get(client.sessionId);
-      if (!player) return;
-      if (!isConnected()) connect();
-
-      const player_data = await this.playersCollection.findOne({
-        farmId: player.farmId,
-      });
-
-      if (!player_data) return;
-      if (!player_data.quests.season_1) player_data.quests.season_1 = {};
-      if (!player_data.quests.season_2) player_data.quests.season_2 = {};
-
-      player_data.quests = input;
-
-      await this.playersCollection.updateOne(
-        { farmId: player.farmId },
-        { $set: player_data }
-      );
-
-      delete player_data._id;
-
-      this.broadcast("player_data", player_data);
+    this.onMessage("fight_request", async (client, input) => {
     });
+
+    this.onMessage("fight_confirm", async (client, input) => {
+    });
+
+    this.onMessage("fight_reject", async (client, input) => {
+    });
+
 
     let elapsedTime = 0;
     this.setSimulationInterval((deltaTime) => {
@@ -158,11 +145,8 @@ export class MainRoom extends Room<RoomState> {
       experience: number;
     }
   ) {
+    // TODO: Get rid of this shit
     await logVisit(auth.farmId);
-
-    if (!isConnected()) {
-      connect();
-    }
 
     console.log(auth.farmId, " joined");
   }
@@ -190,7 +174,7 @@ export class MainRoom extends Room<RoomState> {
       };
     }
   ) {
-    const db_data = await this.playersCollection.findOne({
+    const dbPlayer = await this.playersCollection.findOne<WithId<IPlayer>>({
       farmId: auth.farmId,
     });
 
@@ -212,16 +196,14 @@ export class MainRoom extends Room<RoomState> {
     player.clothing.hat = clothing.hat;
     player.clothing.hair = clothing.hair;
     player.clothing.wings = clothing.wings;
+    player.power = 100; // TODO: Count from DB
 
     player.sceneId = auth.sceneId;
 
     this.state.players.set(client.sessionId, player);
 
-    delete db_data._id;
+    delete dbPlayer._id;
 
-    if (!db_data.assets) db_data.assets = [];
-    if (!db_data.quests) db_data.quests = { season_1: {}, season_2: {} };
-
-    this.broadcast("player_data", db_data);
+    this.broadcast("login", dbPlayer);
   }
 }

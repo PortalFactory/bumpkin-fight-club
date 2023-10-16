@@ -3,7 +3,7 @@ import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
 import basicAuth from "express-basic-auth";
 
-import { MainRoom } from "./rooms/MainRoom";
+import { MainRoom } from "./rooms/mainRoom";
 import { connect, getDatabase } from "./db/client";
 import { dbWearablesInit } from "./db/initialization";
 

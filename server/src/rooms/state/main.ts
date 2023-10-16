@@ -4,7 +4,7 @@ import {
   MapSchema,
   ArraySchema,
 } from "@colyseus/schema";
-import { Equipped } from "../../types/bumpkin";
+import { Equipped } from "@dto/bumpkin";
 
 export interface InputData {
   x: number;

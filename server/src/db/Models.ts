@@ -1,13 +1,7 @@
 import { Schema, model } from "mongoose";
+import { IPlayer } from "@dto/protocol";
 
 // Player
-
-export interface IPlayer {
-  farmId: string;
-  visitCount: number;
-  wallet: string;
-  farm: string;
-}
 
 export const PlayerSchema = new Schema<IPlayer>({
   farmId: { type: String, required: true },
