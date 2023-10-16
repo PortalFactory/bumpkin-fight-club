@@ -1,4 +1,4 @@
-import { npcModalManager } from "../Components/NPCModal";
+import { npcModalManager } from "../components/NPCModal";
 import { CustomObject } from "../models/objects";
 import { eventManager } from "./event-manager";
 
