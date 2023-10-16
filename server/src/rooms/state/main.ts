@@ -1,10 +1,8 @@
 import {
   Schema,
-  Context,
   type,
   MapSchema,
   ArraySchema,
-  filterChildren,
 } from "@colyseus/schema";
 import { Equipped } from "../../types/bumpkin";
 
@@ -43,6 +41,7 @@ export class Player extends Schema {
   @type("number") y?: number;
   @type("number") tick?: number;
   @type("string") npc?: string;
+  @type("number") power?: number;
 
   @type(Clothing)
   clothing = new Clothing();

@@ -9,14 +9,8 @@ export const connect = async () => {
     .catch((err) => console.log(err));
 };
 
-export const disconnect = async () => {
-  await mongoose.disconnect();
-};
+export const disconnect = async () => await mongoose.disconnect();
 
-export const isConnected = () => {
-  return mongoose.connection.readyState === 1;
-};
+export const isConnected = () => mongoose.connection.readyState === 1;
 
-export const getDatabase = () => {
-  return mongoose.connection.db;
-};
+export const getDatabase = () => mongoose.connection.db;
