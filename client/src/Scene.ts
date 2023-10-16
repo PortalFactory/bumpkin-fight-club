@@ -7,13 +7,14 @@ import * as env from "env";
 
 import { UI } from "./UI";
 import { eventManager } from "./lib/event-manager";
-import { Label } from "./Components/common/Label";
-import { CommunityModals, DatabaseData } from "./models/types";
+import { Label } from "./components/common/Label";
 import { CustomNPCs } from "./lib/npcs";
 import { CustomObjects } from "./lib/objects";
 import { CustomAudio, CustomAudios } from "./lib/audio";
 import { CustomObject } from "./models/objects";
 import { CustomNPC } from "./models/npcs";
+import { DatabaseData } from "./models/player";
+import { CommunityModal, MachineInterpreter } from "./models/global";
 
 // Community API
 export const CommunityAPI = new window.CommunityAPI({
@@ -32,8 +33,8 @@ export default class ExternalScene extends window.BaseScene {
       },
       player: {
         spawn: {
-          x: 567,
-          y: 770,
+          x: 240,
+          y: 255,
         },
       },
       mmo: {
@@ -103,6 +104,17 @@ export default class ExternalScene extends window.BaseScene {
     // ambient.setLoop(true);
     // ambient.setVolume(0.05);
     // ambient.play();
+
+    if (env.DEV) {
+      this.events.on("shutdown", () => {
+        this.cache.tilemap.remove(env.COMMUNITY_ISLAND_ID);
+        this.scene.remove(env.COMMUNITY_ISLAND_ID);
+      });
+      const spaceBar = this.input.keyboard.addKey("SPACE");
+      spaceBar.on("down", () => {
+        this.scene.start("default");
+      });
+    }
   }
 
   unMountUI() {
@@ -115,38 +127,38 @@ export default class ExternalScene extends window.BaseScene {
   update() {
     super.update();
 
+    const mmoServiceSnapshot = (
+      this.mmoService as MachineInterpreter
+    ).getSnapshot();
+
     if (!isLoaded) {
       this.input.keyboard.enabled = false;
     }
 
-    if (!this.playerDatalistener) {
-      this.playerDatalistener = this.mmoService.state.context.server?.onMessage(
-        "player_data",
-        (data: DatabaseData) => {
-          if (!isLoaded) {
-            isLoaded = true;
-            this.input.keyboard.enabled = true;
-            eventManager.emit("loading", false);
-          }
+    if (mmoServiceSnapshot.matches("joined") && !this.initiatedListeners) {
+      const mmoContext = mmoServiceSnapshot.context;
 
-          this.updateUserData(data);
+      mmoContext.server?.onMessage("player_data", (data: DatabaseData) => {
+        if (!isLoaded) {
+          isLoaded = true;
+          this.input.keyboard.enabled = true;
+          eventManager.emit("loading", false);
         }
-      );
-    }
 
-    // if (!this.leaveListener) {
-    //   this.leaveListener = this.mmoService.state.context.server?.onLeave(() => {
-    //     console.error("Lost connection to server");
-    //     eventManager.emit("lostConnection");
-    //   });
-    // }
+        this.updateUserData(data);
+      });
 
-    if (!this.idkWhyIHaveToListenToThis) {
-      this.idkWhyIHaveToListenToThis =
-        this.mmoService.state.context.server?.onMessage(
-          "__playground_message_types",
-          () => {}
-        );
+      mmoContext.server?.send("load_player_data", {
+        options: this.options.player.spawn,
+        auth: {
+          bumpkin: mmoContext.bumpkin,
+          farmId: mmoContext.farmId,
+          sceneId: mmoContext.initialSceneId,
+          experience: mmoContext.experience,
+        },
+      });
+
+      this.initiatedListeners = true;
     }
   }
 
@@ -181,7 +193,7 @@ export default class ExternalScene extends window.BaseScene {
       custom_npc.on("pointerdown", () => {
         if (npc.id !== "boat" && this.CheckPlayerDistance(npc.x, npc.y)) return;
 
-        window.openModal(npc.modal as CommunityModals);
+        window.openModal(npc.modal as CommunityModal);
       });
     } else {
       custom_npc.on("pointerdown", () => {
@@ -246,7 +258,7 @@ export default class ExternalScene extends window.BaseScene {
       custom_obj.on("pointerdown", () => {
         if (obj.id !== "boat" && this.CheckPlayerDistance(obj.x, obj.y)) return;
 
-        window.openModal(obj.modal as CommunityModals);
+        window.openModal(obj.modal as CommunityModal);
       });
     } else {
       custom_obj.on("pointerdown", () => {
@@ -276,11 +288,14 @@ export default class ExternalScene extends window.BaseScene {
   }
 
   updateUserData(db_data: DatabaseData) {
+    const mmoContext = (this.mmoService as MachineInterpreter).getSnapshot()
+      .context;
+
     if (!db_data) {
       return;
     }
 
-    if (db_data.farmId !== this.mmoService.state.context.farmId) {
+    if (db_data.farmId !== mmoContext.farmId) {
       return;
     }
 
