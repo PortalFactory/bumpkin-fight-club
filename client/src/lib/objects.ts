@@ -5,8 +5,8 @@ import { eventManager } from "./event-manager";
 export const CustomObjects: CustomObject[] = [
   {
     id: "boat",
-    x: 520,
-    y: 840,
+    x: 240,
+    y: 300,
     spritesheet: "/assets/objects/Boat.png",
     isAnimated: false,
     sheet: {
@@ -35,8 +35,8 @@ export const CustomObjects: CustomObject[] = [
   },
   {
     id: "boat_smoke",
-    x: 480,
-    y: 810,
+    x: 200,
+    y: 270,
     spritesheet: "/assets/objects/BoatSmoke.png",
     isAnimated: true,
     sheet: {
@@ -53,8 +53,8 @@ export const CustomObjects: CustomObject[] = [
   },
   {
     id: "spawn_wooden_sign",
-    x: 600,
-    y: 730,
+    x: 280,
+    y: 260,
     spritesheet: "/assets/objects/WoodenSign.png",
     isAnimated: false,
     sheet: {

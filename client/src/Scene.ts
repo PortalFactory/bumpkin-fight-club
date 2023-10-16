@@ -33,8 +33,8 @@ export default class ExternalScene extends window.BaseScene {
       },
       player: {
         spawn: {
-          x: 567,
-          y: 770,
+          x: 240,
+          y: 255,
         },
       },
       mmo: {
@@ -104,6 +104,17 @@ export default class ExternalScene extends window.BaseScene {
     // ambient.setLoop(true);
     // ambient.setVolume(0.05);
     // ambient.play();
+
+    if (env.DEV) {
+      this.events.on("shutdown", () => {
+        this.cache.tilemap.remove(env.COMMUNITY_ISLAND_ID);
+        this.scene.remove(env.COMMUNITY_ISLAND_ID);
+      });
+      const spaceBar = this.input.keyboard.addKey("SPACE");
+      spaceBar.on("down", () => {
+        this.scene.start("default");
+      });
+    }
   }
 
   unMountUI() {
@@ -116,40 +127,38 @@ export default class ExternalScene extends window.BaseScene {
   update() {
     super.update();
 
-    const mmoContext = (this.mmoService as MachineInterpreter).getSnapshot()
-      .context;
+    const mmoServiceSnapshot = (
+      this.mmoService as MachineInterpreter
+    ).getSnapshot();
 
     if (!isLoaded) {
       this.input.keyboard.enabled = false;
     }
 
-    if (!this.playerDatalistener) {
-      this.playerDatalistener = mmoContext.server?.onMessage(
-        "player_data",
-        (data: DatabaseData) => {
-          if (!isLoaded) {
-            isLoaded = true;
-            this.input.keyboard.enabled = true;
-            eventManager.emit("loading", false);
-          }
+    if (mmoServiceSnapshot.matches("joined") && !this.initiatedListeners) {
+      const mmoContext = mmoServiceSnapshot.context;
 
-          this.updateUserData(data);
+      mmoContext.server?.onMessage("player_data", (data: DatabaseData) => {
+        if (!isLoaded) {
+          isLoaded = true;
+          this.input.keyboard.enabled = true;
+          eventManager.emit("loading", false);
         }
-      );
-    }
 
-    // if (!this.leaveListener) {
-    //   this.leaveListener = mmoContext.server?.onLeave(() => {
-    //     console.error("Lost connection to server");
-    //     eventManager.emit("lostConnection");
-    //   });
-    // }
+        this.updateUserData(data);
+      });
 
-    if (!this.idkWhyIHaveToListenToThis) {
-      this.idkWhyIHaveToListenToThis = mmoContext.server?.onMessage(
-        "__playground_message_types",
-        () => {}
-      );
+      mmoContext.server?.send("load_player_data", {
+        options: this.options.player.spawn,
+        auth: {
+          bumpkin: mmoContext.bumpkin,
+          farmId: mmoContext.farmId,
+          sceneId: mmoContext.initialSceneId,
+          experience: mmoContext.experience,
+        },
+      });
+
+      this.initiatedListeners = true;
     }
   }
 

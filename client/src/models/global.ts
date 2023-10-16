@@ -62,7 +62,7 @@ export type MachineInterpreter = Interpreter<
 export interface MMOContext {
   jwt: string;
   farmId: number;
-  // bumpkin: Bumpkin;
+  bumpkin: any;
   client?: Client;
   // availableServers: Server[];
   server?: Room<ExternalScene> | undefined;

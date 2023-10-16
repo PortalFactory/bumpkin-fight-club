@@ -28,6 +28,7 @@ export class MainRoom extends Room<RoomState> {
   private farmConnections: Record<number, string> = {};
 
   onCreate(options: any) {
+    console.log("room", this.roomId, "creating...");
     this.setState(new RoomState());
 
     // set map dimensions
@@ -39,6 +40,10 @@ export class MainRoom extends Room<RoomState> {
 
       // enqueue input to user input buffer.
       player?.inputQueue.push(input);
+    });
+
+    this.onMessage("load_player_data", async (client, input) => {
+      this.loadPlayerData(client, input);
     });
 
     this.onMessage("quest_event", async (client, input) => {
@@ -155,8 +160,36 @@ export class MainRoom extends Room<RoomState> {
   ) {
     await logVisit(auth.farmId);
 
-    if (!isConnected()) connect();
+    if (!isConnected()) {
+      connect();
+    }
 
+    console.log(auth.farmId, " joined");
+  }
+
+  onLeave(client: Client, consented: boolean) {
+    this.state.players.delete(client.sessionId);
+  }
+
+  onDispose() {
+    console.log("room", this.roomId, "disposing...");
+  }
+
+  async loadPlayerData(
+    client: Client,
+    {
+      options,
+      auth,
+    }: {
+      options: { x: number; y: number };
+      auth: {
+        bumpkin: Bumpkin;
+        farmId: number;
+        sceneId: string;
+        experience: number;
+      };
+    }
+  ) {
     const db_data = await this.playersCollection.findOne({
       farmId: auth.farmId,
     });
@@ -190,13 +223,5 @@ export class MainRoom extends Room<RoomState> {
     if (!db_data.quests) db_data.quests = { season_1: {}, season_2: {} };
 
     this.broadcast("player_data", db_data);
-  }
-
-  onLeave(client: Client, consented: boolean) {
-    this.state.players.delete(client.sessionId);
-  }
-
-  onDispose() {
-    console.log("room", this.roomId, "disposing...");
   }
 }
