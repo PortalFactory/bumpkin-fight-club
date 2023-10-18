@@ -15,6 +15,7 @@ import { CustomObject } from "./models/objects";
 import { CustomNPC } from "./models/npcs";
 import { DatabaseData } from "./models/player";
 import { CommunityModal, MachineInterpreter } from "./models/global";
+import { LoginParams } from "@dto/protocol";
 
 // Community API
 export const CommunityAPI = new window.CommunityAPI({
@@ -149,14 +150,13 @@ export default class ExternalScene extends window.BaseScene {
       });
 
       mmoContext.server?.send("login", {
-        options: this.options.player.spawn,
-        auth: {
-          bumpkin: mmoContext.bumpkin,
-          farmId: mmoContext.farmId,
-          sceneId: mmoContext.initialSceneId,
-          experience: mmoContext.experience,
-        },
-      });
+        x: this.options.player.spawn.x,
+        y: this.options.player.spawn.y,
+        bumpkin: mmoContext.bumpkin,
+        farmId: mmoContext.farmId,
+        sceneId: mmoContext.initialSceneId,
+        experience: mmoContext.experience,
+      } as LoginParams);
 
       this.initiatedListeners = true;
     }

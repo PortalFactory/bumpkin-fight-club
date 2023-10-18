@@ -2,7 +2,7 @@ import { Room, Client } from "colyseus";
 import { IncomingMessage } from "http";
 
 import { Bumpkin } from "@dto/bumpkin";
-import { IPlayer } from "@dto/protocol";
+import { IPlayer, LoginParams } from "@dto/protocol";
 import { getDatabase } from "../db/client";
 import { logVisit } from "../db/logger";
 import { Clothing, InputData, Message, RoomState, Player } from "./state/main";
@@ -44,19 +44,15 @@ export class MainRoom extends Room<RoomState> {
       player?.inputQueue.push(input);
     });
 
-    this.onMessage("login", async (client, input) => {
+    this.onMessage("login", async (client, input: LoginParams) => {
       this.loadPlayerData(client, input);
     });
 
-    this.onMessage("fight_request", async (client, input) => {
-    });
+    this.onMessage("fight_request", async (client, input) => {});
 
-    this.onMessage("fight_confirm", async (client, input) => {
-    });
+    this.onMessage("fight_confirm", async (client, input) => {});
 
-    this.onMessage("fight_reject", async (client, input) => {
-    });
-
+    this.onMessage("fight_reject", async (client, input) => {});
 
     let elapsedTime = 0;
     this.setSimulationInterval((deltaTime) => {
@@ -117,7 +113,7 @@ export class MainRoom extends Room<RoomState> {
   }
 
   async onAuth(
-    client: Client<any>,
+    client: Client,
     options: {
       jwt: string;
       farmId: number;
@@ -159,34 +155,20 @@ export class MainRoom extends Room<RoomState> {
     console.log("room", this.roomId, "disposing...");
   }
 
-  async loadPlayerData(
-    client: Client,
-    {
-      options,
-      auth,
-    }: {
-      options: { x: number; y: number };
-      auth: {
-        bumpkin: Bumpkin;
-        farmId: number;
-        sceneId: string;
-        experience: number;
-      };
-    }
-  ) {
+  async loadPlayerData(client: Client, params: LoginParams) {
     const dbPlayer = await this.playersCollection.findOne<WithId<IPlayer>>({
-      farmId: auth.farmId,
+      farmId: params.farmId,
     });
 
-    this.farmConnections[auth.farmId] = client.sessionId;
+    this.farmConnections[params.farmId] = client.sessionId;
 
     const player = new Player();
-    player.x = options.x ?? 567;
-    player.y = options.y ?? 770;
-    player.farmId = auth.farmId;
-    player.experience = auth.experience ?? 0;
+    player.x = params.x ?? 567;
+    player.y = params.y ?? 770;
+    player.farmId = params.farmId;
+    player.experience = params.experience ?? 0;
 
-    const clothing = auth.bumpkin.equipped;
+    const clothing = params.bumpkin.equipped;
     player.clothing.body = clothing.body;
     player.clothing.shirt = clothing.shirt;
     player.clothing.pants = clothing.pants;
@@ -198,7 +180,7 @@ export class MainRoom extends Room<RoomState> {
     player.clothing.wings = clothing.wings;
     player.power = 100; // TODO: Count from DB
 
-    player.sceneId = auth.sceneId;
+    player.sceneId = params.sceneId;
 
     this.state.players.set(client.sessionId, player);
 

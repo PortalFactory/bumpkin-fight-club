@@ -551,4 +551,88 @@ export const BUMPKIN_ITEM_BUFF: Partial<Record<BumpkinItem, string>> = {
 };
 
 // TODO - specify your definity of a Bumpkin, including bonus attributes
-export type Bumpkin = any;
+export type Bumpkin = {
+  id: number;
+  equipped: Equipped;
+  tokenUri: string;
+  experience: number;
+  skills: Partial<Record<BumpkinSkillName, number>>;
+  achievements?: Partial<Record<AchievementName, number>>;
+  activity?: Record<string, number>;
+};
+
+export type BumpkinSkillName =
+  | "Green Thumb"
+  | "Cultivator"
+  | "Master Farmer"
+  | "Golden Flowers"
+  | "Plant Whisperer"
+  | "Happy Crop"
+  | "Lumberjack"
+  | "Tree Hugger"
+  | "Tough Tree"
+  | "Money Tree"
+  | "Digger"
+  | "Coal Face"
+  | "Seeker"
+  | "Gold Rush"
+  | "Rush Hour"
+  | "Kitchen Hand"
+  | "Michelin Stars"
+  | "Curer"
+  | "Stable Hand"
+  | "Free Range"
+  | "Horse Whisperer"
+  | "Buckaroo";
+
+export type AchievementName =
+  | "Explorer"
+  | "Busy Bumpkin"
+  | "Brilliant Bumpkin"
+  | "Sun Seeker"
+  | "Sunflower Superstar"
+  | "My life is potato"
+  | "Jack O'Latern"
+  | "20/20 Vision"
+  | "Cabbage King"
+  | "Beetroot Beast"
+  | "Cool Flower"
+  | "Patient Parsnips"
+  | "Rapid Radish"
+  | "Staple Crop"
+  | "Farm Hand"
+  | "Crop Champion"
+  | "Bread Winner"
+  | "Bumpkin Billionaire"
+  | "Big Spender"
+  | "High Roller"
+  | "Timbeerrr"
+  | "Bumpkin Chainsaw Amateur"
+  | "Driller"
+  | "Canary"
+  | "Iron Eyes"
+  | "Something Shiny"
+  | "El Dorado"
+  | "Gold Fever"
+  | "Kiss the Cook"
+  | "Bakers Dozen"
+  | "Chef de Cuisine"
+  | "Craftmanship"
+  | "Time to chop"
+  | "Contractor"
+  | "Museum"
+  | "Orange Squeeze"
+  | "Apple of my Eye"
+  | "Blue Chip"
+  | "Fruit Platter"
+  | "Well of Prosperity"
+  | "Scarecrow Maestro"
+  | "Delivery Dynamo"
+  | "Land Baron"
+  | "Seasoned Farmer"
+  | "Land Expansion Enthusiast"
+  | "Treasure Hunter"
+  | "Egg-cellent Collection"
+  | "Land Expansion Extraordinaire"
+  | "Fruit Aficionado"
+  | "Crowd Favourite";

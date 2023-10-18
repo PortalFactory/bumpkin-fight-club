@@ -1,6 +1,8 @@
 import { Interpreter } from "xstate";
-import ExternalScene from "../Scene";
 import { Client, Room } from "colyseus.js";
+
+import ExternalScene from "../Scene";
+import { Bumpkin } from "@dto/bumpkin";
 
 declare global {
   interface Window {
@@ -62,7 +64,7 @@ export type MachineInterpreter = Interpreter<
 export interface MMOContext {
   jwt: string;
   farmId: number;
-  bumpkin: any;
+  bumpkin: Bumpkin;
   client?: Client;
   // availableServers: Server[];
   server?: Room<ExternalScene> | undefined;
