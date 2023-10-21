@@ -5,4 +5,5 @@ export type EventNames =
   | "backToSpawn"
   | "lostConnection"
   | "preventClose"
-  | "unmountUI";
+  | "unmountUI"
+  | "displayPower";

@@ -2,7 +2,7 @@ import { Room, Client } from "colyseus";
 import { IncomingMessage } from "http";
 
 import { Bumpkin } from "@dto/bumpkin";
-import { IPlayer, LoginParams } from "@dto/protocol";
+import { IPlayer, LoginData, LoginParams } from "@dto/protocol";
 import { getDatabase } from "../db/client";
 import { logVisit } from "../db/logger";
 import { Clothing, InputData, Message, RoomState, Player } from "./state/main";
@@ -178,7 +178,9 @@ export class MainRoom extends Room<RoomState> {
     player.clothing.hat = clothing.hat;
     player.clothing.hair = clothing.hair;
     player.clothing.wings = clothing.wings;
-    player.power = 100; // TODO: Count from DB
+
+    const power = 100; // TODO: Count from DB
+    player.power = power;
 
     player.sceneId = params.sceneId;
 
@@ -186,6 +188,10 @@ export class MainRoom extends Room<RoomState> {
 
     delete dbPlayer._id;
 
-    this.broadcast("login", dbPlayer);
+    this.broadcast("login", {
+      canAccess: true,
+      ...dbPlayer,
+      power,
+    } as LoginData);
   }
 }

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 // @ts-ignore
 import * as env from "env";
 
-import { InnerPanel } from "./common/Panel";
+import { InnerPanel } from "../common/Panel";
 
 export type NotificationIcons = "Success";
 

@@ -8,22 +8,27 @@ import { CommunityAPI } from "./Scene";
 import { eventManager } from "./lib/event-manager";
 import { NPCModal } from "./components/NPCModal";
 import { LostConnection } from "./components/modals/LostConnection";
-import { Notifications, notificationManager } from "./components/Notification";
+import {
+  Notifications,
+  notificationManager,
+} from "./components/hud/Notification";
 import { Dialogue } from "./components/modals/Dialogue";
 import { IsleIntroduction } from "./components/modals/IsleIntroduction";
 import { Banned } from "./components/modals/Banned";
 import { Loading } from "./components/modals/Loading";
+import { PowerPanel } from "./components/hud/PowerPanel";
 
 type Props = {
   scene: any;
 };
 
 export const UI: React.FC<Props> = ({ scene }) => {
-  const [lostConnection, setLostConnection] = useState<boolean>(false);
-  const [dialogueMessage, setDialogueMessage] = useState<string>("");
-  const [showIntroduction, setShowIntroduction] = useState<boolean>(false);
-  const [isBanned, setIsBanned] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [lostConnection, setLostConnection] = useState(false);
+  const [dialogueMessage, setDialogueMessage] = useState("");
+  const [showIntroduction, setShowIntroduction] = useState(false);
+  const [isBanned, setIsBanned] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [power, setPower] = useState(0);
 
   useEffect(() => {
     // Register listeners
@@ -33,6 +38,7 @@ export const UI: React.FC<Props> = ({ scene }) => {
     eventManager.on("banned", bannedListener);
     eventManager.on("loading", loadingListener);
     eventManager.on("unmountUI", unmountUIListener);
+    eventManager.on("displayPower", displayPowerListener);
 
     const hasCompletedIntroduction = localStorage.getItem(
       env.COMMUNITY_ISLAND_ID + ".introduction"
@@ -77,10 +83,15 @@ export const UI: React.FC<Props> = ({ scene }) => {
     scene.unMountUI();
   };
 
+  const displayPowerListener = (power: number) => {
+    setPower(power);
+  };
+
   return (
     <>
       <NPCModal scene={scene} />
       <Notifications scene={scene} />
+      <PowerPanel power={power} />
       <Dialogue scene={scene} message={dialogueMessage} onClose={() => {}} />
 
       {/* Static backdrop modal */}

@@ -13,9 +13,8 @@ import { CustomObjects } from "./lib/objects";
 import { CustomAudio, CustomAudios } from "./lib/audio";
 import { CustomObject } from "./models/objects";
 import { CustomNPC } from "./models/npcs";
-import { DatabaseData } from "./models/player";
 import { CommunityModal, MachineInterpreter } from "./models/global";
-import { LoginParams } from "@dto/protocol";
+import { LoginData, LoginParams } from "@dto/protocol";
 
 // Community API
 export const CommunityAPI = new window.CommunityAPI({
@@ -139,7 +138,7 @@ export default class ExternalScene extends window.BaseScene {
     if (mmoServiceSnapshot.matches("joined") && !this.initiatedListeners) {
       const mmoContext = mmoServiceSnapshot.context;
 
-      mmoContext.server?.onMessage("login", (data: DatabaseData) => {
+      mmoContext.server?.onMessage("login", (data: LoginData) => {
         if (!isLoaded) {
           isLoaded = true;
           this.input.keyboard.enabled = true;
@@ -287,28 +286,28 @@ export default class ExternalScene extends window.BaseScene {
     }
   }
 
-  updateUserData(db_data: DatabaseData) {
+  updateUserData(data: LoginData) {
     const mmoContext = (this.mmoService as MachineInterpreter).getSnapshot()
       .context;
 
-    if (!db_data) {
+    if (!data) {
       return;
     }
 
-    if (db_data.farmId !== mmoContext.farmId) {
+    if (data.farmId !== mmoContext.farmId) {
       return;
     }
 
-    if (db_data.canAccess === false) {
+    if (data.canAccess === false) {
       eventManager.emit("banned");
       return;
     }
 
     const playerWardrobe = CommunityAPI.game.wardrobe;
 
-    this.currentPlayer.db_data = db_data;
+    this.currentPlayer.customData = data;
 
-    this.updateUserMapSettings(db_data);
+    eventManager.emit("displayPower", data.power);
   }
 
   CheckPlayerDistance(x: number, y: number) {
@@ -342,8 +341,6 @@ export default class ExternalScene extends window.BaseScene {
       ambient.resume();
     });
   }
-
-  updateUserMapSettings(db_data: DatabaseData) {}
 
   sendPlayerToSpawn() {
     eventManager.emit("dialogue", "");
