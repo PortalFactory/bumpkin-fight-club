@@ -1,4 +1,4 @@
-name: Deploy client to Pages
+name: "[DEV] Deploy client to Pages"
 
 on:
   # Runs on pushes targeting the default branch
@@ -23,6 +23,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: dev
     defaults:
       run:
         working-directory: ./client
