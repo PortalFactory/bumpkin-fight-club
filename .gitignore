@@ -2,8 +2,3 @@ node_modules
 
 .env
 .vscode
-
-/client/public/Scene.js
-
-/server/build
-/tiled/*.tiled-session
