@@ -21,4 +21,3 @@ jobs:
           cd server
           npm ci
           npm run build
-          npm run restart-prod
