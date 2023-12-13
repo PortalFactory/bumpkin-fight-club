@@ -16,8 +16,8 @@ jobs:
         port: 22
         script: |
           cd ~/../home/user/dev/bumpkin-fight-club/
+          git checkout main
           git pull origin main
           git status
-          cd server
           npm ci
           npm run build
