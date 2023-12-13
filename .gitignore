@@ -4,7 +4,6 @@ node_modules
 .vscode
 
 /client/public/Scene.js
-/client/public/tileset.png
 
 /server/build
 /tiled/*.tiled-session
