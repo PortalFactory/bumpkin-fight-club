@@ -14,6 +14,11 @@ export const Player = model<IPlayer>('Player', PlayerSchema);
 
 // Wearable
 
+export type WearableJSON = {
+  name: string;
+  power: number;
+};
+
 export interface IWearable {
   item: string;
   power: number;

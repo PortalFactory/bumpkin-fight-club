@@ -1,0 +1,83 @@
+[
+    {
+        "name": "Love Quiver",
+        "power": 3,
+        "type": "wings",
+        "supply": 340,
+        "weight": 0.0029411764705882353,
+        "rawPower": 0.031467373302418014,
+        "powerMultiplier": 1
+    },
+    {
+        "name": "Devil Wings",
+        "power": 43,
+        "type": "wings",
+        "supply": 25,
+        "weight": 0.04,
+        "rawPower": 0.427956276912885,
+        "powerMultiplier": 1
+    },
+    {
+        "name": "Angel Wings",
+        "power": 43,
+        "type": "wings",
+        "supply": 25,
+        "weight": 0.04,
+        "rawPower": 0.427956276912885,
+        "powerMultiplier": 1
+    },
+    {
+        "name": "Crow Wings",
+        "power": 11,
+        "type": "wings",
+        "supply": 95,
+        "weight": 0.010526315789473684,
+        "rawPower": 0.11262007287181185,
+        "powerMultiplier": 1
+    },
+    {
+        "name": "Fruit Picker Apron",
+        "power": 1,
+        "type": "coat",
+        "supply": 7434,
+        "weight": 0.00013451708366962604,
+        "rawPower": 0.0065724004976146205,
+        "powerMultiplier": 1
+    },
+    {
+        "name": "Chef Apron",
+        "power": 2,
+        "type": "coat",
+        "supply": 3008,
+        "weight": 0.0003324468085106383,
+        "rawPower": 0.016243093517043578,
+        "powerMultiplier": 1
+    },
+    {
+        "name": "Pirate General Coat",
+        "power": 98,
+        "type": "coat",
+        "supply": 50,
+        "weight": 0.02,
+        "rawPower": 0.9771845059853418,
+        "powerMultiplier": 1
+    },
+    {
+        "name": "Crab Claw",
+        "power": 81,
+        "type": "secondaryTool",
+        "supply": 100,
+        "weight": 0.01,
+        "rawPower": 0.4047619047619048,
+        "powerMultiplier": 1
+    },
+    {
+        "name": "Sunflower Shield",
+        "power": 119,
+        "type": "secondaryTool",
+        "supply": 68,
+        "weight": 0.014705882352941176,
+        "rawPower": 0.5952380952380952,
+        "powerMultiplier": 1
+    }
+]
