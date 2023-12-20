@@ -8,11 +8,8 @@ export interface IPlayer {
 }
 
 export interface LoginParams {
-  x: number;
-  y: number;
   bumpkin: Bumpkin;
   farmId: number;
-  sceneId: string;
   experience: number;
 }
 
