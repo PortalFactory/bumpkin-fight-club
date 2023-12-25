@@ -6,6 +6,7 @@ import { LoginParams } from "../dto/protocol";
 import { getDatabase } from "../db/client";
 import { logVisit } from "../db/logger";
 import { Clothing, InputData, Message, RoomState, Player } from "./state/main";
+import { getPower } from '../services/wearable';
 
 const MAX_MESSAGES = 100;
 
@@ -155,18 +156,23 @@ export class MainRoom extends Room<RoomState> {
     player.experience = params.experience ?? 0;
 
     const clothing = params.bumpkin.equipped;
+    player.clothing.background = clothing.background;
     player.clothing.body = clothing.body;
-    player.clothing.shirt = clothing.shirt;
-    player.clothing.pants = clothing.pants;
-    player.clothing.onesie = clothing.onesie;
-    player.clothing.suit = clothing.suit;
+    player.clothing.coat = clothing.coat;
     player.clothing.dress = clothing.dress;
-    player.clothing.hat = clothing.hat;
     player.clothing.hair = clothing.hair;
+    player.clothing.hat = clothing.hat;
+    player.clothing.necklace = clothing.necklace;
+    player.clothing.onesie = clothing.onesie;
+    player.clothing.pants = clothing.pants;
+    player.clothing.secondaryTool = clothing.secondaryTool;
+    player.clothing.shirt = clothing.shirt;
+    player.clothing.shoes = clothing.shoes;
+    player.clothing.suit = clothing.suit;
+    player.clothing.tool = clothing.tool;
     player.clothing.wings = clothing.wings;
 
-    const power = 100; // TODO: Count from DB
-    player.power = power;
+    player.power = getPower(player);
 
     this.state.players.set(client.sessionId, player);
   }
