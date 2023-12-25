@@ -5,7 +5,6 @@ import basicAuth from "express-basic-auth";
 
 import { MainRoom } from "./rooms/mainRoom";
 import { connect, getDatabase } from "./db/client";
-import { dbWearablesInit } from "./db/initialization";
 
 const basicAuthMiddleware = basicAuth({
   // list of users and passwords
@@ -42,10 +41,5 @@ export default config({
 
   beforeListen: async () => {
     await connect();
-    const database = getDatabase();
-    const wearablesCount = await database.collection("wearables").countDocuments();
-
-    if (!wearablesCount)
-      dbWearablesInit();
   },
 });

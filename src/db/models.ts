@@ -11,22 +11,3 @@ export const PlayerSchema = new Schema<IPlayer>({
 });
 
 export const Player = model<IPlayer>('Player', PlayerSchema);
-
-// Wearable
-
-export type WearableJSON = {
-  name: string;
-  power: number;
-};
-
-export interface IWearable {
-  item: string;
-  power: number;
-}
-
-export const WearableSchema = new Schema<IWearable>({
-  item: { type: String, required: true },
-  power: { type: Number, required: true },
-});
-
-export const Wearable = model<IWearable>('Wearable', WearableSchema);
