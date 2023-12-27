@@ -1,3 +1,5 @@
+import { Player } from '../rooms/state/main';
+
 function weightedRand(weights: number[]): number {
   const r = Math.random();
   let sum = 0;
@@ -9,15 +11,15 @@ function weightedRand(weights: number[]): number {
   }
 }
 
-export function fight(players: any[]): any {
+export function fight(players: Player[]): number {
   const [fPlayer, sPlayer] = players;
-  const totalValue = fPlayer.value + sPlayer.value;
+  const totalValue = fPlayer.power + sPlayer.power;
   const weights = [
-    fPlayer.value / totalValue,
-    sPlayer.value / totalValue
+    fPlayer.power / totalValue,
+    sPlayer.power / totalValue
   ];
 
   const res = weightedRand(weights);
 
-  return players[res];
+  return res === 0 ? 100 : -100;
 }

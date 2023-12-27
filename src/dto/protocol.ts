@@ -5,6 +5,10 @@ export interface IPlayer {
   visitCount: number;
   wallet: string;
   farm: string;
+  fights: number;
+  won: number;
+  lost: number;
+  score: number;
 }
 
 export interface LoginParams {

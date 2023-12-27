@@ -5,6 +5,8 @@ import basicAuth from "express-basic-auth";
 
 import { MainRoom } from "./rooms/mainRoom";
 import { connect, getDatabase } from "./db/client";
+import { CronJob } from 'cron';
+import { resetDailyFightsDb } from './db/db';
 
 const basicAuthMiddleware = basicAuth({
   // list of users and passwords
@@ -41,5 +43,12 @@ export default config({
 
   beforeListen: async () => {
     await connect();
+
+    const job = CronJob.from({
+        cronTime: '0 0 0 * * *',
+        onTick: () => resetDailyFightsDb(),
+        start: true,
+        timeZone: 'utc'
+    });
   },
 });

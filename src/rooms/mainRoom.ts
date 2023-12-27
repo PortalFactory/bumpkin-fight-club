@@ -4,9 +4,10 @@ import { IncomingMessage } from "http";
 import { Bumpkin } from "../dto/bumpkin";
 import { LoginParams } from "../dto/protocol";
 import { getDatabase } from "../db/client";
-import { logVisit } from "../db/logger";
+import { onPlayerFightDb, onPlayerJoinDb } from "../db/db";
 import { Clothing, InputData, Message, RoomState, Player } from "./state/main";
 import { getPower } from '../services/wearable';
+import { fight } from '../services/matchmaking';
 
 const MAX_MESSAGES = 100;
 
@@ -41,11 +42,26 @@ export class MainRoom extends Room<RoomState> {
       player?.inputQueue.push(input);
     });
 
-    this.onMessage("fight_request", async (client, input) => {});
+    this.onMessage("fight_request", async (client, input) => {
+        const player = this.state.players.get(client.sessionId);
 
-    this.onMessage("fight_confirm", async (client, input) => {});
+        if (player.fights < 1)
+            return;
 
-    this.onMessage("fight_reject", async (client, input) => {});
+        const opponent = this.state.players.get(input.sessionId);
+
+        const score = fight([
+            player,
+            opponent
+        ]);
+
+        player.fights--;
+        player.won += (score >= 0 ? 1 : 0);
+        player.lost += (score < 0 ? 1 : 0);
+        player.score += score;
+
+        await onPlayerFightDb(player.farmId, score);
+    });
 
     let elapsedTime = 0;
     this.setSimulationInterval((deltaTime) => {
@@ -135,7 +151,7 @@ export class MainRoom extends Room<RoomState> {
     }
   ) {
     this.loadPlayerData(client, options);
-    await logVisit(auth.farmId);
+    await onPlayerJoinDb(auth.farmId);
 
     console.log(auth.farmId, " joined");
   }
