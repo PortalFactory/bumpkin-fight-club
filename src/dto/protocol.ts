@@ -12,6 +12,7 @@ export interface IPlayer {
 }
 
 export interface LoginParams {
+  sceneId: string;
   bumpkin: Bumpkin;
   farmId: number;
   experience: number;

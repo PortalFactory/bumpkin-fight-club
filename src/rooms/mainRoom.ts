@@ -3,11 +3,10 @@ import { IncomingMessage } from "http";
 
 import { Bumpkin } from "../dto/bumpkin";
 import { LoginParams } from "../dto/protocol";
-import { getDatabase } from "../db/client";
 import { onPlayerFightDb, onPlayerJoinDb } from "../db/db";
 import { Clothing, InputData, Message, RoomState, Player } from "./state/main";
-import { getPower } from '../services/wearable';
-import { fight } from '../services/matchmaking';
+import { getPower } from "../services/wearable";
+import { fight } from "../services/matchmaking";
 
 const MAX_MESSAGES = 100;
 
@@ -16,9 +15,6 @@ export class MainRoom extends Room<RoomState> {
 
   maxClients: number = 150;
 
-  private database = getDatabase();
-  private playersCollection = this.database.collection("players");
-
   private pushMessage = (message: Message) => {
     this.state.messages.push(message);
 
@@ -26,9 +22,6 @@ export class MainRoom extends Room<RoomState> {
       this.state.messages.shift();
     }
   };
-
-  // Farm ID > sessionId
-  private farmConnections: Record<number, string> = {};
 
   onCreate(options: any) {
     console.log("room", this.roomId, "creating...");
@@ -43,24 +36,20 @@ export class MainRoom extends Room<RoomState> {
     });
 
     this.onMessage("fight_request", async (client, input) => {
-        const player = this.state.players.get(client.sessionId);
+      const player = this.state.players.get(client.sessionId);
 
-        if (player.fights < 1)
-            return;
+      if (player.fights < 1) return;
 
-        const opponent = this.state.players.get(input.sessionId);
+      const opponent = this.state.players.get(input.sessionId);
 
-        const score = fight([
-            player,
-            opponent
-        ]);
+      const score = fight([player, opponent]);
 
-        player.fights--;
-        player.won += (score >= 0 ? 1 : 0);
-        player.lost += (score < 0 ? 1 : 0);
-        player.score += score;
+      player.fights--;
+      player.won += score >= 0 ? 1 : 0;
+      player.lost += score < 0 ? 1 : 0;
+      player.score += score;
 
-        await onPlayerFightDb(player.farmId, score);
+      await onPlayerFightDb(player.farmId, score);
     });
 
     let elapsedTime = 0;
@@ -158,6 +147,8 @@ export class MainRoom extends Room<RoomState> {
 
   onLeave(client: Client, consented: boolean) {
     this.state.players.delete(client.sessionId);
+
+    console.log("player left");
   }
 
   onDispose() {
@@ -165,30 +156,29 @@ export class MainRoom extends Room<RoomState> {
   }
 
   loadPlayerData(client: Client, params: LoginParams) {
-    this.farmConnections[params.farmId] = client.sessionId;
-
     const player = new Player();
+    player.sceneId = params.sceneId;
     player.farmId = params.farmId;
     player.experience = params.experience ?? 0;
 
-    const clothing = params.bumpkin.equipped;
-    player.clothing.background = clothing.background;
-    player.clothing.body = clothing.body;
-    player.clothing.coat = clothing.coat;
-    player.clothing.dress = clothing.dress;
-    player.clothing.hair = clothing.hair;
-    player.clothing.hat = clothing.hat;
-    player.clothing.necklace = clothing.necklace;
-    player.clothing.onesie = clothing.onesie;
-    player.clothing.pants = clothing.pants;
-    player.clothing.secondaryTool = clothing.secondaryTool;
-    player.clothing.shirt = clothing.shirt;
-    player.clothing.shoes = clothing.shoes;
-    player.clothing.suit = clothing.suit;
-    player.clothing.tool = clothing.tool;
-    player.clothing.wings = clothing.wings;
+    const equipped = params.bumpkin.equipped;
+    player.clothing.background = equipped.background;
+    player.clothing.body = equipped.body;
+    player.clothing.coat = equipped.coat;
+    player.clothing.dress = equipped.dress;
+    player.clothing.hair = equipped.hair;
+    player.clothing.hat = equipped.hat;
+    player.clothing.necklace = equipped.necklace;
+    player.clothing.onesie = equipped.onesie;
+    player.clothing.pants = equipped.pants;
+    player.clothing.secondaryTool = equipped.secondaryTool;
+    player.clothing.shirt = equipped.shirt;
+    player.clothing.shoes = equipped.shoes;
+    player.clothing.suit = equipped.suit;
+    player.clothing.tool = equipped.tool;
+    player.clothing.wings = equipped.wings;
 
-    player.power = getPower(player);
+    player.power = getPower(equipped);
 
     this.state.players.set(client.sessionId, player);
   }
