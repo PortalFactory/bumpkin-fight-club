@@ -1,10 +1,5 @@
-import {
-  Schema,
-  type,
-  MapSchema,
-  ArraySchema,
-} from "@colyseus/schema";
-import { Equipped } from "../../dto/bumpkin";
+import { Schema, type, MapSchema, ArraySchema } from "@colyseus/schema";
+import { Equipped } from "../../dto/wearables";
 
 export interface InputData {
   x: number;

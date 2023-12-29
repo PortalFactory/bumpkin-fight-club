@@ -1,5 +1,5 @@
 import wearables from "../db/wearables.json";
-import { Equipped } from "../dto/bumpkin";
+import { Equipped } from "../dto/wearables";
 
 export function getPower(equipped: Equipped): number {
   const clothes = Object.values(equipped) as string[];
