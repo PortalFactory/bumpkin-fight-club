@@ -1,5 +1,7 @@
 import { connect, isConnected, getDatabase } from "./client";
 import { getFarm } from "../web3/Alchemy";
+import { LeaderboardData } from '../dto/protocol';
+import { Player } from '../rooms/state/main';
 
 const FIGHTS = 10;
 
@@ -72,4 +74,33 @@ export async function resetDailyFightsDb(): Promise<void> {
     await playersCollection.updateMany({}, {
         $set: { fights: FIGHTS }
     },)
+}
+
+export async function leaderboardDb(farmId: number): Promise<LeaderboardData> {
+    if (!isConnected())
+        await connect();
+
+    const database = getDatabase();
+    const playersCollection = database.collection<Player>("players");
+    const sorted = await playersCollection.find().sort({ score: -1 }).toArray();
+    const topTen = [];
+    let currentFound = false;
+
+    for (let i = 0; i < sorted.length - 1; i++) {
+        if (currentFound && topTen.length === 10)
+            break;
+
+        const player = sorted[i];
+
+        if (topTen.length === 10 && player.farmId !== farmId)
+            continue;
+
+        topTen.push({
+            id: player.farmId,
+            count: player.score,
+            rank: i + 1
+        });
+    }
+
+    return { topTen };
 }

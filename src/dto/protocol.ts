@@ -22,3 +22,14 @@ export interface LoginData extends IPlayer {
   power: number;
   canAccess: boolean;
 }
+
+export type RankData = {
+    id: number;
+    count: number;
+    rank?: number;
+  };
+
+export interface LeaderboardData {
+    topTen: RankData[];
+    farmRankingDetails?: RankData[];
+}
