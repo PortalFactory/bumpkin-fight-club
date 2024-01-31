@@ -17,20 +17,21 @@ export interface InputData {
 
 export class Clothing extends Schema {
   @type("string") background?: string;
-  @type("string") body?: string;
-  @type("string") coat?: string;
-  @type("string") dress?: string;
   @type("string") hair?: string;
-  @type("string") hat?: string;
-  @type("string") necklace?: string;
-  @type("string") onesie?: string;
-  @type("string") pants?: string;
-  @type("string") secondaryTool?: string;
+  @type("string") body?: string;
   @type("string") shirt?: string;
+  @type("string") pants?: string;
   @type("string") shoes?: string;
-  @type("string") suit?: string;
   @type("string") tool?: string;
+  @type("string") necklace?: string;
+  @type("string") coat?: string;
+  @type("string") hat?: string;
+  @type("string") secondaryTool?: string;
+  @type("string") onesie?: string;
+  @type("string") suit?: string;
   @type("string") wings?: string;
+  @type("string") dress?: string;
+  @type("string") beard?: string;
 }
 
 export class Player extends Schema {
